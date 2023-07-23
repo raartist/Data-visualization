@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import Table from "./components/Table";
-import { getAlcoholTypes, getHeaderData, getMeanList } from "./utils/utils";
+import { getAlcoholTypes, getHeaderData, getTripleMs } from "./utils/utils";
 import wineData from "./Wine-Data.json";
 
 // type Obvj = {
@@ -13,9 +13,8 @@ import wineData from "./Wine-Data.json";
 function App() {
   const [data] = useState([...wineData]);
   const [header, setHeader] = useState([]);
-  const [mean, setMean] = useState([]);
-  const [median, setMedian] = useState([]);
-  const [mode, setMode] = useState([]);
+  const [flavanoidsMs, setFlavanoidsMs] = useState({});
+  const [gammaMs, setGammaMs] = useState({});
   const [alcType, setAlcType] = useState([]);
   const key = "Alcohol";
 
@@ -25,15 +24,35 @@ function App() {
   }, [alcType && alcType.length]);
 
   useEffect(() => {
-    getMeanList(data, alcType);
+    setStates(key);
   }, [header && header.length]);
+
+  useEffect(() => {
+    setStates("Gamma");
+  }, [setFlavanoidsMs,header]);
+
+  const setStates = (key) => {
+    const temp = getTripleMs(data, alcType, key);
+    let mean2 = [];
+    let median2 = [];
+    let mode2 = [];
+    temp.forEach((item) => {
+      mean2.push(item.mean);
+      median2.push(item.median);
+      mode2.push(item.mode);
+    });
+    if (key === "Gamma") {
+      setGammaMs({ mean: mean2, median: median2, mode: mode2 });
+    } else {
+      setFlavanoidsMs({ mean: mean2, median: median2, mode: mode2 });
+    }
+  };
 
   useEffect(() => {
     const tp = getAlcoholTypes(data, key);
     setAlcType([...tp]);
   }, [data]);
 
-  console.log(header);
   return (
     <div className="App">
       <h2>
@@ -41,7 +60,8 @@ function App() {
           <u>Data Visualization</u>
         </strong>
       </h2>
-      <Table header={header} classType={alcType} />
+      {flavanoidsMs && <Table header={header} FMs={flavanoidsMs} GMs={gammaMs} />}
+      {gammaMs && gammaMs.mean && gammaMs.mean.length > 0 && <Table header={header} FMs={flavanoidsMs} GMs={gammaMs} isGamma={true} />}
     </div>
   );
 }

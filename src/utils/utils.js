@@ -4,7 +4,7 @@ export function getHeaderData(arr, key) {
   return tempArr;
 }
 
-export const calculateTripleMs = (arr, key = "Flavanoids") => {
+export const calculateTripleMs = (arr, key) => {
   let temp = {};
   const len = arr.length;
 
@@ -13,11 +13,19 @@ export const calculateTripleMs = (arr, key = "Flavanoids") => {
     let median = 0;
     let valueArr = [];
     let mode = 0;
-    len > 0 &&
-      arr.forEach((item) => {
-        mean += Number(item[key]);
-        valueArr.push(Number(item[key]));
-      });
+    if (key === "Gamma") {
+      for (let i = 0; i < len; i++) {
+        const Gamma = calculateGamma(arr[i]);
+        mean += Number(Gamma);
+        valueArr.push(Number(Gamma));
+      }
+    } else {
+      len > 0 &&
+        arr.forEach((item) => {
+          mean += Number(item["Flavanoids"]);
+          valueArr.push(Number(item["Flavanoids"]));
+        });
+    }
     mean = mean / len;
     mode = getMode(valueArr, len);
     median = mean - (mean - mode) / 3; //formula for median
@@ -39,8 +47,8 @@ const getTypes = (val, len) => {
   return val.reduce((acc, e) => acc.set(e, (acc.get(e) || 0) + 1), new Map());
 };
 
-const calculateGamma = (ash, hue, mg) => {
-  return (ash * hue) / mg;
+const calculateGamma = (item) => {
+  return (item["Ash"] * item["Hue"]) / item["Magnesium"];
 };
 
 export const getAlcoholTypes = (arr, key = "Alcohol") => {
@@ -52,7 +60,7 @@ export const getAlcoholTypes = (arr, key = "Alcohol") => {
   }
 };
 
-export const getMeanList = (arr, clsArr) => {
+export const getTripleMs = (arr, clsArr, key) => {
   let temp = [];
 
   for (let i = 0; i < clsArr.length; i++) {
@@ -67,7 +75,7 @@ export const getMeanList = (arr, clsArr) => {
 
   let mean = [];
   temp.forEach((item) => {
-    mean.push(calculateTripleMs(item));
+    mean.push(calculateTripleMs(item, key));
   });
   return mean;
 };
