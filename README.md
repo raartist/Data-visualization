@@ -1,3 +1,7 @@
+# Data-Visualization UI Screen Shot
+
+![image](https://github.com/raartist/Data-visualization/assets/60755611/ac824b20-5d1f-40c9-b684-d4d3a45e72d6)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
