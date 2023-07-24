@@ -2,6 +2,8 @@
 
 ![image](https://github.com/raartist/Data-visualization/assets/60755611/ac824b20-5d1f-40c9-b684-d4d3a45e72d6)
 
+Here I calculated Flavanoids Mean, Median and Mode Table 1. and then calculated Gamma value using **(Ash*Hue)/Magnesium** formula. And Generated Gamma Mean, Median and Mode using the same methods Table 2. (earlier used for flavanoids MMM calculation)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
